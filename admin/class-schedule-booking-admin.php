@@ -1,5 +1,7 @@
 <?php
 
+// namespace Schedulebooking;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -47,12 +49,12 @@ class Schedule_Booking_Admin {
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	// public function __construct( $plugin_name, $version ) {
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+	// 	$this->plugin_name = $plugin_name;
+	// 	$this->version = $version;
 
-	}
+	// }
 
 	/**
 	 * Register the stylesheets for the admin area.
@@ -99,5 +101,36 @@ class Schedule_Booking_Admin {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/schedule-booking-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
+
+
+public function admin_part(){
+	// Display booked appointments in the admin panel
+function appointment_booking_admin_menu() {
+    add_menu_page(
+        'Appointment Booking',
+        'Appointments',
+        'manage_options',
+        'appointment_booking',
+        'appointment_booking_admin_page'
+    );
+}
+add_action('admin_menu', 'appointment_booking_admin_menu');
+
+// Admin page content
+function appointment_booking_admin_page() {
+    $booked_appointment_date = get_option('booked_appointment_date');
+    ?>
+    <div class="wrap">
+        <h2>Booked Appointments</h2>
+        <?php if ($booked_appointment_date) : ?>
+            <p>Appointment booked for: <?php echo esc_html($booked_appointment_date); ?></p>
+        <?php else : ?>
+            <p>No appointments booked yet.</p>
+        <?php endif; ?>
+    </div>
+    <?php
+}
+}
+
 
 }

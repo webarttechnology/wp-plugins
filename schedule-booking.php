@@ -1,5 +1,8 @@
 <?php
 
+// namespace AppointmentBooking;
+// namespace Schedulebooking;
+
 /**
  * The plugin bootstrap file
  *
@@ -30,6 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// use Schedulebooking\Schedule_Booking_Admin;
 /**
  * Currently plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org
@@ -80,3 +84,53 @@ function run_schedule_booking() {
 
 }
 run_schedule_booking();
+
+
+// Shortcode for the booking form
+function appointment_booking_form_shortcode() {
+    if (isset($_POST['submit_appointment'])) {
+        $appointment_date = sanitize_text_field($_POST['appointment_date']);
+        // Perform additional validation and processing as needed
+        // For simplicity, let's just save the date in the options table
+        update_option('booked_appointment_date', $appointment_date);
+        echo '<p>Appointment booked for ' . $appointment_date . '</p>';
+    }
+
+    ob_start();
+    ?>
+    <!-- <form method="post" action="">
+        <label for="appointment_date">Select Appointment Date:</label>
+        <input type="date" name="appointment_date" required>
+        <input type="submit" name="submit_appointment" value="Book Appointment">
+    </form> -->
+    <?php
+//     return ob_get_clean();
+}
+// add_shortcode('appointment_form', 'appointment_booking_form_shortcode');
+
+// require_once plugin_dir_path( __FILE__ ) . 'admin/class-schedule-booking-admin.php';
+
+// $my_plugin = new Schedule_Booking_Admin();
+
+// $my_plugin->admin_part();
+
+
+require_once plugin_dir_path(__FILE__) . 'includes/class-appointment-booking.php';
+
+
+
+class BootstrapIntegration {
+    public function __construct() {
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_bootstrap'));
+    }
+
+    public function enqueue_bootstrap() {
+        wp_enqueue_style('bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
+        wp_enqueue_script('bootstrap-js', 'https://code.jquery.com/jquery-3.5.1.slim.min.js', array(), '3.5.1', true);
+        wp_enqueue_script('popper-js', 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js', array(), '2.5.2', true);
+        wp_enqueue_script('bootstrap-js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', array('jquery', 'popper-js'), '4.5.2', true);
+    }
+}
+
+new BootstrapIntegration();
+new AppointmentBooking();

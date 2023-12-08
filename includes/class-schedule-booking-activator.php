@@ -31,6 +31,15 @@ class Schedule_Booking_Activator {
 	 */
 	public static function activate() {
 
+
+		// echo "<script> alert('Hello World');
+		// console.log('Hello World');
+		// </script>";
+
+		// echo "Hello world";	
+
+
+
 	}
 
 }
