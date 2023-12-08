@@ -10,7 +10,7 @@ class AppointmentBooking {
     public function __construct() {
         add_action('init', array($this, 'register_post_type'));
         add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
-        add_action('save_post', array($this, 'save_appointment_details'));
+        add_action('save_post', array($this, 'save_appointment_details_meta_box'));
         add_shortcode('appointment_form', array($this, 'render_appointment_form'));
         add_action('init', array($this, 'handle_form_submission'));
         add_action('admin_menu', array($this, 'add_plugin_submenu'));
@@ -89,9 +89,26 @@ class AppointmentBooking {
 var $mysite_url="";
 
 
-    public function render_appointment_details_meta_box($post) {
+//     public function render_appointment_details_meta_box($post) {
 
-        // print_r('hello world');
+//         // print_r('hello world');
+//     // Retrieve appointment details
+//     $name = get_post_meta($post->ID, '_name', true);
+//     $phone = get_post_meta($post->ID, '_phone', true);
+//     $email = get_post_meta($post->ID, '_email', true);
+//     $date = get_post_meta($post->ID, '_date', true);
+//     $time = get_post_meta($post->ID, '_time', true);
+
+//     // Display appointment details
+//     echo '<p><strong>name:</strong> ' . esc_html($name) . '</p>';
+//     echo '<p><strong>Phone:</strong> ' . esc_html($phone) . '</p>';
+//     echo '<p><strong>Email:</strong> ' . esc_html($email) . '</p>';
+//     echo '<p><strong>Date:</strong> ' . esc_html($date) . '</p>';
+//     echo '<p><strong>Time:</strong> ' . esc_html($time) . '</p>';
+// }
+
+
+public function render_appointment_details_meta_box($post) {
     // Retrieve appointment details
     $name = get_post_meta($post->ID, '_name', true);
     $phone = get_post_meta($post->ID, '_phone', true);
@@ -99,13 +116,71 @@ var $mysite_url="";
     $date = get_post_meta($post->ID, '_date', true);
     $time = get_post_meta($post->ID, '_time', true);
 
-    // Display appointment details
-    echo '<p><strong>name:</strong> ' . esc_html($name) . '</p>';
-    echo '<p><strong>Phone:</strong> ' . esc_html($phone) . '</p>';
-    echo '<p><strong>Email:</strong> ' . esc_html($email) . '</p>';
-    echo '<p><strong>Date:</strong> ' . esc_html($date) . '</p>';
-    echo '<p><strong>Time:</strong> ' . esc_html($time) . '</p>';
+    // Display appointment details with input fields
+    ?>
+
+
+<div class="container mt-5 mb-5">
+<div class="row">
+    <div class="col" style="margin:20px 0px;" >
+       <label for="appointment_name">Name:</label>
+    <input type="text" id="appointment_name" class="form-control" style="margin:10px 0px;" name="appointment_name" value="<?php echo esc_attr($name); ?>"> <br>
+
+    <label for="appointment_phone">Phone:</label>
+    <input type="tel" id="appointment_phone" class="form-control" style="margin:10px 0px;" name="appointment_phone" value="<?php echo esc_attr($phone); ?>"> <br>
+
+    <label for="appointment_email">Email:</label>
+    <input type="email" id="appointment_email" class="form-control" style="margin:10px 0px;" name="appointment_email" value="<?php echo esc_attr($email); ?>"> <br>
+
+    <label for="appointment_date">Date:</label>
+    <input type="date" id="appointment_datepicker" style="margin:10px 0px;" class="form-control" name="appointment_date" value="<?php echo esc_attr($date); ?>"> <br>
+
+    <label for="appointment_time">Time:</label>
+    <input type="time" id="appointment_timePicker" style="margin:10px 0px;" class="form-control" name="appointment_time" value="<?php echo esc_attr($time); ?>"> <br>
+
+
+    </div>
+</div>  
+
+</div>
+
+    <?php
 }
+
+public function save_appointment_details_meta_box($post_id) {
+    // Check if the user has permission to edit the post
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    // Update appointment details based on submitted form data
+    // update_post_meta($post_id, '_name', sanitize_text_field($_POST['appointment_name']));
+    // update_post_meta($post_id, '_phone', sanitize_text_field($_POST['appointment_phone']));
+    // update_post_meta($post_id, '_email', sanitize_text_field($_POST['appointment_email']));
+    // update_post_meta($post_id, '_date', sanitize_text_field($_POST['appointment_date']));
+    // update_post_meta($post_id, '_time', sanitize_text_field($_POST['appointment_time']));
+
+
+    // if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
+        // Check if the keys exist in the $_POST array
+        $appointment_name = isset($_POST['appointment_name']) ? sanitize_text_field($_POST['appointment_name']) : '';
+        $appointment_phone = isset($_POST['appointment_phone']) ? sanitize_text_field($_POST['appointment_phone']) : '';
+        $appointment_email = isset($_POST['appointment_email']) ? sanitize_text_field($_POST['appointment_email']) : '';
+        $appointment_date = isset($_POST['appointment_date']) ? sanitize_text_field($_POST['appointment_date']) : '';
+        $appointment_time = isset($_POST['appointment_time']) ? sanitize_text_field($_POST['appointment_time']) : '';
+    
+        // Save or update the post with the new data
+        update_post_meta($post_id, '_name', $appointment_name);
+        update_post_meta($post_id, '_phone', $appointment_phone);
+        update_post_meta($post_id, '_email', $appointment_email);
+        update_post_meta($post_id, '_date', $appointment_date);
+        update_post_meta($post_id, '_time', $appointment_time);
+    // }
+
+}
+
+// Hook to save appointment details when the post is saved
+// add_action('save_post', array($this, 'save_appointment_details_meta_box'));
 
 
 public function add_plugin_submenu() {

@@ -119,6 +119,39 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-appointment-booking.php
 
 
 
+function enqueue_flatpickr_scripts() {
+    // Enqueue flatpickr CSS
+    wp_enqueue_style('flatpickr-css', 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css');
+
+    // Enqueue flatpickr JavaScript
+    wp_enqueue_script('flatpickr-js', 'https://cdn.jsdelivr.net/npm/flatpickr', array(), null, true);
+}
+add_action('wp_enqueue_scripts', 'enqueue_flatpickr_scripts');
+
+// Add a script to initialize flatpickr
+function initialize_flatpickr_script() {
+    ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        flatpickr("#appointment_timePicker", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+        });
+
+        flatpickr("#appointment_datepicker", {
+            enableTime: false,
+            noCalendar: false,
+            // dateFormat: "H:i",
+        });
+    });
+    </script>
+    <?php
+}
+add_action('wp_footer', 'initialize_flatpickr_script');
+
+
+
 class BootstrapIntegration {
     public function __construct() {
         add_action('wp_enqueue_scripts', array($this, 'enqueue_bootstrap'));

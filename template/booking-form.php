@@ -15,7 +15,7 @@ $siteUrl = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 ?>
 
 
-<div class="container">
+<div class="container mt-5 mb-5">
 <div class="row justify-content-center"> <h3>Appointment Booking Form</h3> </div>
 <div class="row">
     <div class="col">
@@ -31,10 +31,10 @@ $siteUrl = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     <input type="email" class="form-control" name="email" required>
 
     <label  for="date">Date:</label>
-    <input type="date" class="form-control" name="date" required>
+    <input type="date" class="form-control" name="date" id="appointment_datepicker" required>
 
     <label  for="time">Time:</label>
-    <input type="time" class="form-control" name="time" required>
+    <input type="time" class="form-control" name="time" id="appointment_timePicker" required>
     <input type="hidden" class="form-control" name="my_site_url" value="<?php echo $siteUrl; ?>">
 
     <input type="submit" class="btn btn-primary mt-3" name="submit_appointment" value="Book Appointment">
