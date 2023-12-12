@@ -167,3 +167,21 @@ class BootstrapIntegration {
 
 new BootstrapIntegration();
 new AppointmentBooking();
+
+
+// function my_ajax_callback() {
+//     // Your PHP logic here
+
+//     $myget = $_POST['objdata'];
+
+//     echo 'Reached the callback function. <br>';
+
+//     // Send a response
+//     print_r($myget);   
+
+//     // Always die in the end to prevent extra output
+//     wp_die();
+// }
+
+// add_action('wp_ajax_my_ajax_action', 'my_ajax_callback');
+// add_action('wp_ajax_nopriv_my_ajax_action', 'my_ajax_callback'); // For non-logged in users
