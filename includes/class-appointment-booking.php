@@ -1,10 +1,4 @@
 <?php
-// namespace AppointmentBooking;
-// if (session_status() == PHP_SESSION_NONE) {
-//     // Start the session
-//     session_start();
-// }
-
 
 class AppointmentBooking {
     public function __construct() {
@@ -73,10 +67,10 @@ public function render_appointment_details_meta_box($post) {
     <label for="appointment_email">Email:</label>
     <input type="email" id="appointment_email" class="form-control" style="margin:10px 0px;" name="appointment_email" value="<?php echo esc_attr($email); ?>"> <br>
 
-    <label for="appointment_date">Date:</label>
+    <label for="appointment_datepicker">Date:</label>
     <input type="date" id="appointment_datepicker" style="margin:10px 0px;" class="form-control" name="appointment_date" value="<?php echo esc_attr($date); ?>"> <br>
 
-    <label for="appointment_time">Time:</label>
+    <label for="appointment_timePicker">Time:</label>
     <input type="time" id="appointment_timePicker" style="margin:10px 0px;" class="form-control" name="appointment_time" value="<?php echo esc_attr($time); ?>"> <br>
 
 
@@ -94,16 +88,6 @@ public function save_appointment_details_meta_box($post_id) {
         return;
     }
 
-    // Update appointment details based on submitted form data
-    // update_post_meta($post_id, '_name', sanitize_text_field($_POST['appointment_name']));
-    // update_post_meta($post_id, '_phone', sanitize_text_field($_POST['appointment_phone']));
-    // update_post_meta($post_id, '_email', sanitize_text_field($_POST['appointment_email']));
-    // update_post_meta($post_id, '_date', sanitize_text_field($_POST['appointment_date']));
-    // update_post_meta($post_id, '_time', sanitize_text_field($_POST['appointment_time']));
-
-
-    // if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
-        // Check if the keys exist in the $_POST array
         $appointment_name = isset($_POST['appointment_name']) ? sanitize_text_field($_POST['appointment_name']) : '';
         $appointment_phone = isset($_POST['appointment_phone']) ? sanitize_text_field($_POST['appointment_phone']) : '';
         $appointment_email = isset($_POST['appointment_email']) ? sanitize_text_field($_POST['appointment_email']) : '';
@@ -116,12 +100,10 @@ public function save_appointment_details_meta_box($post_id) {
         update_post_meta($post_id, '_email', $appointment_email);
         update_post_meta($post_id, '_date', $appointment_date);
         update_post_meta($post_id, '_time', $appointment_time);
-    // }
+    
 
 }
 
-// Hook to save appointment details when the post is saved
-// add_action('save_post', array($this, 'save_appointment_details_meta_box'));
 
 
 public function add_plugin_submenu() {
@@ -154,68 +136,34 @@ public function render_plugin_info_page() {
         return ob_get_clean();
     }
     
-    
-    // public function handle_form_submission() {
-    //     if (isset($_POST['submit_appointment'])) {
-    //         $name = sanitize_text_field($_POST['name']);
-    //         $phone = sanitize_text_field($_POST['phone']);
-    //         $email = sanitize_email($_POST['email']);
-    //         $date = sanitize_text_field($_POST['date']);
-    //         $time = sanitize_text_field($_POST['time']);
-    //         $mysite_url = sanitize_text_field($_POST['my_site_url']);
-    
-    //         // Save the appointment details as a post
-    //         $post_data = array(
-    //             'post_title' => $name . ' - ' . $date . ' ' . $time,
-    //             'post_type' => 'appointment',
-    //             'post_status' => 'publish',
-    //         );
-    
-    //         $post_id = wp_insert_post($post_data);
-    
-    //         if (!is_wp_error($post_id)) {
-    //             update_post_meta($post_id, '_name', $name);
-    //             update_post_meta($post_id, '_phone', $phone);
-    //             update_post_meta($post_id, '_email', $email);
-    //             update_post_meta($post_id, '_date', $date);
-    //             update_post_meta($post_id, '_time', $time);
-
-    //             // header("Location: ".$_SESSION['site_url']);
-    //             echo "<script type='text/javascript'> 
-    //             alert('Appointment booked successfully');
-    //             window.location.href = '" . $mysite_url . "';
-    //           </script>";
-        
-    //           $mysite_url="";
-    //             //  header("Location: ".$_SESSION['site_url']);
-
-    //             // session_destroy();
-    //             exit;
-
-    //             // echo $_SESSION['site_url'];
-    
-    //             // echo '<p>Appointment booked successfully!</p>';
-    //         } else {
-    //             echo '<p>Error booking appointment.</p>';
-    //             header("Location: ".$mysite_url);
-
-    //             // session_destroy();
-    //             $mysite_url="";
-    //             exit;
-    //         }
-    //     }
-    // }
+   
     public function save_appointment_details($post_id) {
     if (isset($_POST['submit_appointment'])) {
-        // ... (previous code)
-
-        // Save the appointment details as post meta
-        // update_post_meta($post_id, '_name', $name);
-        // update_post_meta($post_id, '_phone', $phone);
-        // update_post_meta($post_id, '_email', $email);
-        // update_post_meta($post_id, '_date', $date);
-        // update_post_meta($post_id, '_time', $time);
+        
     }
+}
+
+
+
+// Mail Function 
+
+// Add this to your theme's functions.php or a custom plugin file
+
+public function appointment_book_mail($name, $phone, $email, $date, $time) {
+
+        // // Email content
+        $to = $email; // Change this to your desired email address
+        $subject = 'New Appointment Booking';
+        $message = "Name: $name\nPhone: $phone\nEmail: $email\nDate: $date\nTime: $time";
+
+        // Send the email
+        $mail_result = wp_mail($to, $subject, $message);
+
+        if ($mail_result) {
+            echo 'successfully_send_email';
+        } else {
+            echo 'email_send_error';
+        }
 }
 
 
@@ -227,20 +175,12 @@ public function my_ajax_callback() {
 
     if($myget['parameter_submit']){
 
-
-    // print_r($myget);
-
     $name = sanitize_text_field($myget['parameter_name']);
     $phone = sanitize_text_field($myget['parameter_phone']);
     $email = sanitize_email($myget['parameter_email']);
     $date = sanitize_text_field($myget['parameter_date']);
     $time = sanitize_text_field($myget['parameter_time']);
 
-    // echo $name;
-
-    // $mysite_url = sanitize_text_field($myget['parameter_submit']);
-
-    // Save the appointment details as a post
     $post_data = array(
         'post_title' => $name . ' - ' . $date . ' ' . $time,
         'post_type' => 'appointment',
@@ -255,7 +195,10 @@ public function my_ajax_callback() {
         update_post_meta($post_id, '_email', $email);
         update_post_meta($post_id, '_date', $date);
         update_post_meta($post_id, '_time', $time);
-echo "successfully_submitted";
+// echo "successfully_submitted";
+
+$this->appointment_book_mail($name, $phone, $email, $date, $time);
+
     } else {
         echo '<p>Error booking appointment.</p>';
     }
@@ -265,10 +208,5 @@ echo "successfully_submitted";
 }
 
 }
-
-// new AppointmentBooking();
-
-
-// session_destroy();   
 
 ?>

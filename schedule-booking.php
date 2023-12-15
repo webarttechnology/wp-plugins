@@ -1,8 +1,5 @@
 <?php
 
-// namespace AppointmentBooking;
-// namespace Schedulebooking;
-
 /**
  * The plugin bootstrap file
  *
@@ -97,91 +94,9 @@ function appointment_booking_form_shortcode() {
     }
 
     ob_start();
-    ?>
-    <!-- <form method="post" action="">
-        <label for="appointment_date">Select Appointment Date:</label>
-        <input type="date" name="appointment_date" required>
-        <input type="submit" name="submit_appointment" value="Book Appointment">
-    </form> -->
-    <?php
-//     return ob_get_clean();
 }
-// add_shortcode('appointment_form', 'appointment_booking_form_shortcode');
-
-// require_once plugin_dir_path( __FILE__ ) . 'admin/class-schedule-booking-admin.php';
-
-// $my_plugin = new Schedule_Booking_Admin();
-
-// $my_plugin->admin_part();
 
 
 require_once plugin_dir_path(__FILE__) . 'includes/class-appointment-booking.php';
 
-
-
-function enqueue_flatpickr_scripts() {
-    // Enqueue flatpickr CSS
-    wp_enqueue_style('flatpickr-css', 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css');
-
-    // Enqueue flatpickr JavaScript
-    wp_enqueue_script('flatpickr-js', 'https://cdn.jsdelivr.net/npm/flatpickr', array(), null, true);
-}
-add_action('wp_enqueue_scripts', 'enqueue_flatpickr_scripts');
-
-// Add a script to initialize flatpickr
-function initialize_flatpickr_script() {
-    ?>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        flatpickr("#appointment_timePicker", {
-            enableTime: true,
-            noCalendar: true,
-            dateFormat: "H:i",
-        });
-
-        flatpickr("#appointment_datepicker", {
-            enableTime: false,
-            noCalendar: false,
-            // dateFormat: "H:i",
-        });
-    });
-    </script>
-    <?php
-}
-add_action('wp_footer', 'initialize_flatpickr_script');
-
-
-
-class BootstrapIntegration {
-    public function __construct() {
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_bootstrap'));
-    }
-
-    public function enqueue_bootstrap() {
-        wp_enqueue_style('bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
-        wp_enqueue_script('bootstrap-js', 'https://code.jquery.com/jquery-3.5.1.slim.min.js', array(), '3.5.1', true);
-        wp_enqueue_script('popper-js', 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js', array(), '2.5.2', true);
-        wp_enqueue_script('bootstrap-js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', array('jquery', 'popper-js'), '4.5.2', true);
-    }
-}
-
-new BootstrapIntegration();
 new AppointmentBooking();
-
-
-// function my_ajax_callback() {
-//     // Your PHP logic here
-
-//     $myget = $_POST['objdata'];
-
-//     echo 'Reached the callback function. <br>';
-
-//     // Send a response
-//     print_r($myget);   
-
-//     // Always die in the end to prevent extra output
-//     wp_die();
-// }
-
-// add_action('wp_ajax_my_ajax_action', 'my_ajax_callback');
-// add_action('wp_ajax_nopriv_my_ajax_action', 'my_ajax_callback'); // For non-logged in users

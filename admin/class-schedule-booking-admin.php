@@ -75,6 +75,10 @@ class Schedule_Booking_Admin {
 		 * class.
 		 */
 
+		 wp_enqueue_style('admin-flatpickr-css', 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css');
+		//  wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/schedule-booking-public.css', array(), $this->version, 'all' );
+		 wp_enqueue_style('admin_bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
+
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/schedule-booking-admin.css', array(), $this->version, 'all' );
 
 	}
@@ -97,7 +101,14 @@ class Schedule_Booking_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
+	 // Enqueue flatpickr JavaScript
+	 wp_enqueue_script('flatpickr-js', 'https://cdn.jsdelivr.net/npm/flatpickr', array(), null, true);
 
+	 wp_enqueue_script('bootstrap-js-2', 'https://code.jquery.com/jquery-3.5.1.slim.min.js', array(), '3.5.1', true);
+	 wp_enqueue_script('popper-js-2', 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js', array(), '2.5.2', true);
+	 wp_enqueue_script('bootstrap-js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', array('jquery', 'popper-js'), '4.5.2', true);
+
+	 wp_enqueue_script( "flat_picker_script_admin", plugin_dir_url( __FILE__ ) . 'js/schedule-admin-flatpicker.js', array( 'jquery' ), $this->version, true );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/schedule-booking-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
